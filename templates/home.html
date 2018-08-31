@@ -11,11 +11,12 @@
         <label>Username
             <input name="username" type="text" value='{{username}}' />
         </label>
-        <p class="error">{{username_error}}</p>
+        class="error" {{username_error}}
+        <p></p>
         <label>Password
-            <input name="password" type="password" value='{{password}}' />
+            <input name="password" type="password" value='{{password}}' {{password_error}} />
         </label>
-        <p class="error">{{password_error}}</p>
+        <p></p>
         <label>Verify Password
             <input name="verify_password" type="password" value='{{verify_password}}' />
         </label>

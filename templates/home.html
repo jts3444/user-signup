@@ -9,22 +9,25 @@
     <h1>User Signup</h1>
     <form method='POST'>
         <label>Username
-            <input name="username" type="text" value='{{username}}' />
+            <input name="username" type="text" value='{{username}}'  /> 
+            <span class="error">{{username_error}}</span> 
         </label>
-        class="error" {{username_error}}
-        <p></p>
+        <p ></p>
         <label>Password
-            <input name="password" type="password" value='{{password}}' {{password_error}} />
+            <input name="password" type="password" value='{{password}}' />
+            <span class="error">{{password_error}}</span>
         </label>
         <p></p>
         <label>Verify Password
             <input name="verify_password" type="password" value='{{verify_password}}' />
+            <span class="error">{{verify_password_error}}</span>
         </label>
-        <p class="error">{{verify_password_error}}</p>
+        <p ></p>
         <label>E-mail (optional)
             <input name="email" type="text" value='{{email}}' />
+            <span class="error">{{email_error}}</span>
         </label>
-        <p class="error">{{email_error}}</p>
+        <p ></p>
         <input type="submit" value="Validate" />
     </form>
 </body>

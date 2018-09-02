@@ -11,6 +11,7 @@ def home():
     return redirect('/home')
 
 #does the checking for the password and userinfo
+#also works if userinfo is blank
 def valid_length(userinfo):
     if len(userinfo) > 20 or len(userinfo) < 3:
         return False
@@ -48,14 +49,15 @@ def validate_usersignup():
     password_error = ''
     verify_password_error = ''
 
-    if password != verify_password:
+    if password != verify_password or not verify_password:
         verify_password_error = 'Passwords do not match'
         verify_password = ''
 
     if not valid_length(password):
         password_error = 'Password length must be between 3 and 20 characters'
         password = ''
-    elif not valid_content(password):
+
+    if not valid_content(password):
         password_error = 'Password cannot contain any spaces'
         password = ''
     

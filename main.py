@@ -5,15 +5,12 @@ import os
 app = Flask(__name__)
 app.config['DEBUG'] = True
 
+#directs the site to the home page
 @app.route("/")
 def home():
     return redirect('/home')
 
-'''@app.route("/", methods=['POST'])
-def home():
-    return render_template('home.html')
-'''
-
+#does the checking for the password and userinfo
 def valid_length(userinfo):
     if len(userinfo) > 20 or len(userinfo) < 3:
         return False
@@ -30,7 +27,7 @@ def display_home():
 
 @app.route("/home", methods=['POST'])
 def validate_usersignup():
-# checking username   
+# pulls username then checks if it's valid 
     username = request.form['username']
 
     username_error = ''
@@ -62,18 +59,21 @@ def validate_usersignup():
         password_error = 'Password cannot contain any spaces'
         password = ''
     
-# email verification
+# email verification, allows there to be no email, but checks it if there is one
     email = request.form['email']
     email_error = ''
 
-    if email == True:
-        if ['@', '.'] not in email:
+    if email:
+        if '@' not in email or '.' not in email:
             email_error = "Not a valid e-mail address"
             email = ''
 
+# if there are no errors, it redirects the user to the welcome site with the username
     if not username_error and not password_error and not verify_password_error and not email_error:
         return redirect('/welcome?username={0}'.format(username))
 
+# if there are errors, the home page stays up, displays the errors, keeps the email and username 
+# but not the passwords
     else:
         return render_template('home.html',
             username_error = username_error,
@@ -83,7 +83,6 @@ def validate_usersignup():
             username = username,
             email = email
             )
-
 
 @app.route('/welcome')
 def welcome():

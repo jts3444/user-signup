@@ -5,15 +5,14 @@ import os
 app = Flask(__name__)
 app.config['DEBUG'] = True
 
-'''@app.route("/")
+@app.route("/")
+def home():
+    return redirect('/home')
+
+'''@app.route("/", methods=['POST'])
 def home():
     return render_template('home.html')
 '''
-@app.route("/home")
-def display_home():
-    return render_template('home.html')
-
-@app.route("/home", methods=['POST'])
 
 def valid_length(userinfo):
     if len(userinfo) > 20 or len(userinfo) < 3:
@@ -25,40 +24,44 @@ def valid_content(userinfo):
         return False
     return True
 
+@app.route("/home")
+def display_home():
+    return render_template('home.html')
+
+@app.route("/home", methods=['POST'])
 def validate_usersignup():
 # checking username   
     username = request.form['username']
 
     username_error = ''
 
-    if valid_length(username) == False:
+    if not valid_length(username):
         username_error = 'Username length must be between 3 and 20 characters'
         username = ''
-    elif valid_content(username) == False:
+    elif not valid_content(username):
         username_error = 'Username cannot contain any spaces'
         username = ''
 
-# setting up password, checking if valid
+# setting up password/verification, checking if valid
+# start with verify password, otherwise if there's an error with the password
+# the password is wiped and the verify password won't match, and also have an error
     password = request.form['password']
-
-    password_error = ''
-
-    if len(password) > 20 or len(password) < 3:
-        password_error = 'Password length must be between 3 and 20 characters'
-        password = ''
-    elif ' ' in password:
-        password_error = 'Password cannot contain any spaces'
-        password = ''
-
-# checking verify password input
     verify_password = request.form['verify_password']
 
+    password_error = ''
     verify_password_error = ''
 
     if password != verify_password:
         verify_password_error = 'Passwords do not match'
         verify_password = ''
 
+    if not valid_length(password):
+        password_error = 'Password length must be between 3 and 20 characters'
+        password = ''
+    elif not valid_content(password):
+        password_error = 'Password cannot contain any spaces'
+        password = ''
+    
 # email verification
     email = request.form['email']
     email_error = ''
@@ -76,6 +79,7 @@ def validate_usersignup():
             username_error = username_error,
             password_error = password_error,
             verify_password_error = verify_password_error,
+            email_error = email_error,
             username = username,
             email = email
             )
